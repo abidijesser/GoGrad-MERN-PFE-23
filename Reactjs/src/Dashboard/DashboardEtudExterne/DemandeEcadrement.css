@@ -1,0 +1,16 @@
+body{
+    background-color: rgb(233, 231, 231);
+    
+    
+}
+
+.container{
+    border-radius: 20px;
+    width: 800px;
+    height: 450px;
+    
+}
+
+ReactModal{
+    background-color: aqua;
+}

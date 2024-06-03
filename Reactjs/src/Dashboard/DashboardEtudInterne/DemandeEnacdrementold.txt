@@ -1,0 +1,524 @@
+import React, { useState, useEffect } from 'react'
+import './Dashboard.css'
+import axios from 'axios';
+import ReactModal from "react-modal";
+import { useContext} from "react";
+import { RecoveryContextEtudiant } from './interne';
+
+
+function DemandeEncadrement ()  {
+    
+    const [selectedIdSujet, setSelectedIdSujet] = useState(null);
+    const [selectedSujet, setSelectedSujet] = useState(null);
+    const [selectedIdEncadrant, setSelectedIdEncadrant] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [response, setResponse] = useState("");
+
+    const [Encadrants, setEncadrants] = useState([
+        { id: 1, Nom: "John", Prenom: "John2", Email:"jasserabidi00@gmail.com" },
+        { id: 2, Nom: "Jane", Prenom: "jane2", Email:"jasserjane@gmail.com" },
+        { id: 3, Nom: "Bob", Prenom: "bob2", Email:"jasserbob@gmail.com" },
+        { id: 4, Nom: "Sara", Prenom: "sara2", Email:"jassersarra@gmail.com" },
+    ]);
+
+    const [Sujets, setSujets] = useState([
+        { id: 1, idE: 1, sujet:"here is the sujets by John 1" },
+        { id: 2, idE: 1, sujet:"here is the sujets by John 2" },
+        { id: 3, idE: 1, sujet:"here is the sujets by John 3" },
+    ]);
+
+    const {setPage}=useContext(RecoveryContextEtudiant);
+
+    function toDeposerStage() {
+        setPage("DeposerStageEtud")
+    }
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedIdSujet(null);
+        setSelectedSujet(null);
+        setSelectedIdEncadrant(null);
+    };
+
+
+    useEffect(() => {
+        // Fetch user data from the server
+        const fetchEnseignantStages = async () => {
+          try {
+            const response = await axios.get('/api/user'); 
+            const ListeEncadrants = response.data;
+            setEncadrants(ListeEncadrants);
+          } catch (error) {
+            console.error('Erreur lors de la récupération des enseignants:', error);
+          }
+        };
+        
+        fetchEnseignantStages();
+        
+    }, []); 
+    // Empty dependency array to run the effect only once when the component mounts
+
+
+    const handleVoirClick = async (id) => {
+        setSelectedIdEncadrant(id);
+
+        try {
+            const response = await axios.get(
+                'https://your-backend-api-url/demandeencadrant',
+                {
+                    id: id
+                }
+            );
+
+            console.log('Request sent successfully');
+            console.log(response.data);
+
+            const SujetsEncadrant = response.data;
+            setSujets(SujetsEncadrant);
+            setIsModalOpen(true);
+        } 
+
+        catch (error) {
+            console.error(error);
+            alert("An error occurred. Please try again.");
+            setIsModalOpen(true);
+        }   
+    };
+
+    const handleSelectSujet = (sujet) => {
+        setSelectedSujet(sujet);
+        setSelectedIdSujet(sujet.id);
+    };
+
+
+    const DemanderEncadrement = async () => {
+    const { selectedIdSujet, selectedIdEncadrant } = this.state;
+
+    try {
+      const response = await axios.post(
+        'https://your-backend-api-url/demandeencadrant',
+        {
+          id: selectedIdEncadrant,
+          idsujet: selectedIdSujet
+        }       
+      );
+
+      console.log('Request sent successfully');
+      console.log(response.data);
+
+
+      if (response.data) {
+        alert("Demnade envoyée avec succès");
+      } 
+      else {
+        alert("erreur, try again later");
+      }
+
+    } 
+    catch (error) {
+      console.error(error);
+      alert("An error occurred. Please try again.");
+    }
+  };
+
+  const isDisabled = response === "pas encore";
+
+  return (
+    
+    <div id='page-top'>
+        <div id="wrapper">
+
+        <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion " id="accordionSidebar">
+
+            <a className="sidebar-brand d-flex align-items-center justify-content-center " href="index.html">
+                <div className="sidebar-brand-icon rotate-n-15">
+                <i className="fas fa-graduation-cap"></i>
+                </div>
+                <div className="sidebar-brand-text mx-3">Pfe </div>
+            </a>
+
+            <hr className="sidebar-divider my-0"/>
+
+            <li className="nav-item active">
+                <a className="nav-link" href="index.html">
+                <i className="fas fa-user"></i>
+                    <span>Mon espace</span></a>
+            </li>
+
+            <hr className="sidebar-divider"/>
+
+            <div className="sidebar-heading">
+               Bienvenue dans votre dashboard
+            </div>
+
+            <hr className="sidebar-divider"/>
+
+            <div className="sidebar-heading text-white">
+                
+                <i className="fas fa-plus"></i>
+                <span className='ml-2 cursor-pointer' onClick={toDeposerStage}>Deposer Stage</span>
+            </div>
+
+            
+
+        </ul>
+      
+        <div id="content-wrapper" className="d-flex flex-column">
+
+            <div id="content">
+
+                <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
+                        <i className="fa fa-bars"></i>
+                    </button>
+
+                    <form
+                        className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div className="input-group">
+                            <input type="text" className="form-control bg-light border-0 small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2"/>
+                            <div className="input-group-append">
+                                <button className="btn btn-primary" type="button">
+                                    <i className="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>    
+
+                    <div>
+                        <boutton
+                            className='text-gray-800 hover:bg-gray-100 py-4 px-4 font-bold no-underline hover:no-underline cursor-pointer'>
+                            Encadrant</boutton>                                          
+                    </div>
+
+                    <ul className="navbar-nav ml-auto">
+
+                        <li className="nav-item dropdown no-arrow d-sm-none">
+                            <a className="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i className="fas fa-search fa-fw"></i>
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form className="form-inline mr-auto w-100 navbar-search">
+                                    <div className="input-group">
+                                        <input type="text" className="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2"/>
+                                        <div className="input-group-append">
+                                            <button className="btn btn-primary" type="button">
+                                                <i className="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <li className="nav-item dropdown no-arrow mx-1">
+                            <a className="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i className="fas fa-bell fa-fw"></i>
+                                <span className="badge badge-danger badge-counter">3+</span>
+                            </a>
+                            <div className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 className="dropdown-header">
+                                    Alerts Center
+                                </h6>
+                                <a className="dropdown-item d-flex align-items-center" href="#">
+                                    <div className="mr-3">
+                                        <div className="icon-circle bg-primary">
+                                            <i className="fas fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="small text-gray-500">December 12, 2023</div>
+                                        <span className="font-weight-bold">A new monthly report is ready to download!</span>
+                                    </div>
+                                </a>
+                                <a className="dropdown-item d-flex align-items-center" href="#">
+                                    <div className="mr-3">
+                                        <div className="icon-circle bg-success">
+                                            <i className="fas fa-donate text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="small text-gray-500">December 7, 2019</div>
+                                        $290.29 has been deposited into your account!
+                                    </div>
+                                </a>
+                                <a className="dropdown-item d-flex align-items-center" href="#">
+                                    <div className="mr-3">
+                                        <div className="icon-circle bg-warning">
+                                            <i className="fas fa-exclamation-triangle text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="small text-gray-500">December 2, 2019</div>
+                                        Spending Alert: We've noticed unusually high spending for your account.
+                                    </div>
+                                </a>
+                                <a className="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                            </div>
+                        </li>
+
+                        <li className="nav-item dropdown no-arrow mx-1">
+                            <a className="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i className="fas fa-envelope fa-fw"></i>
+                                <span className="badge badge-danger badge-counter">7</span>
+                            </a>
+                            <div className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="messagesDropdown">
+                                <h6 className="dropdown-header">
+                                    Message Center
+                                </h6>
+                                <a className="dropdown-item d-flex align-items-center" href="#">
+                                    <div className="dropdown-list-image mr-3">
+                                        <img className="rounded-circle" src="img/undraw_profile_1.svg"
+                                            alt="..."/>
+                                        <div className="status-indicator bg-success"></div>
+                                    </div>
+                                    <div className="font-weight-bold">
+                                        <div className="text-truncate">Hi there! I am wondering if you can help me with a
+                                            problem I've been having.</div>
+                                        <div className="small text-gray-500">Emily Fowler · 58m</div>
+                                    </div>
+                                </a>
+                                <a className="dropdown-item d-flex align-items-center" href="#">
+                                    <div className="dropdown-list-image mr-3">
+                                        <img className="rounded-circle" src="img/undraw_profile_2.svg"
+                                            alt="..."/>
+                                        <div className="status-indicator"></div>
+                                    </div>
+                                    <div>
+                                        <div className="text-truncate">I have the photos that you ordered last month, how
+                                            would you like them sent to you?</div>
+                                        <div className="small text-gray-500">Jae Chun · 1d</div>
+                                    </div>
+                                </a>
+                                <a className="dropdown-item d-flex align-items-center" href="#">
+                                    <div className="dropdown-list-image mr-3">
+                                        <img className="rounded-circle" src="img/undraw_profile_3.svg"
+                                            alt="..."/>
+                                        <div className="status-indicator bg-warning"></div>
+                                    </div>
+                                    <div>
+                                        <div className="text-truncate">Last month's report looks great, I am very happy with
+                                            the progress so far, keep up the good work!</div>
+                                        <div className="small text-gray-500">Morgan Alvarez · 2d</div>
+                                    </div>
+                                </a>
+                                <a className="dropdown-item d-flex align-items-center" href="#">
+                                    <div className="dropdown-list-image mr-3">
+                                        <img className="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
+                                            alt="..."/>
+                                        <div className="status-indicator bg-success"></div>
+                                    </div>
+                                    <div>
+                                        <div className="text-truncate">Am I a good boy? The reason I ask is because someone
+                                            told me that people say this to all dogs, even if they aren't good...</div>
+                                        <div className="small text-gray-500">Chicken the Dog · 2w</div>
+                                    </div>
+                                </a>
+                                <a className="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                            </div>
+                        </li>
+
+                        <div className="topbar-divider d-none d-sm-block"></div>
+
+                        <li className="nav-item dropdown no-arrow">
+                            <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                
+                                <img className="img-profile rounded-circle mr-3"
+                                    src="img/undraw_profile.svg"/>
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <boutton className="dropdown-item" >
+                                    <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </boutton>
+                                <a className="dropdown-item" href="#">
+                                    <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a className="dropdown-item" href="#">
+                                    <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
+
+                                <div className="dropdown-divider"></div>
+                                <a className="dropdown-item" href="" data-toggle="modal" data-target="#logoutModal">
+                                    <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+
+                <div className='bg-white rounded ml-3' 
+                style={{ width: '97%', height:'85%', border: '2px solid #E7E7E7' }}>
+                    <div className="row p-3 m-0 bg-white rounded ml-3" >
+                    <h3 className='mb-4'>Liste des encadrants</h3>
+
+                    <table  class="table-bordered table " >
+
+                        <thead >
+                            <tr className='bg-gray-200 ' >
+                                <th className="pr-5">Nom </th>
+                                <th>Prenom</th>
+                                <th></th>
+                                
+                            </tr>
+                        </thead>
+
+                        <tbody  >
+
+                            {Encadrants.map((encadrant) => (   
+
+                                <tr  key={encadrant.id}  >
+                                    
+                                    <td >{encadrant.Prenom}</td>
+                                    <td>{encadrant.Nom}</td>
+                                    <td>
+                    
+                                    <button
+                                        className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mt-1 mb-1 ml-10 '
+                                        onClick={() => {
+                                        const result = window.confirm("Voulez-vous envoyer un email a: " +encadrant.Nom+" " +encadrant.Prenom+ "?");
+                                        if (result) {
+                                            window.open(`mailto:${encadrant.Email}`);
+                                        }
+                                        }}
+                                        >
+                                        Contacter
+                                    </button>
+
+                                    <button
+                                        className='ml-5 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 rounded ' 
+                                        onClick={() => handleVoirClick(encadrant.id)}
+                                        >
+                                        Voir sujets
+                                    </button>
+
+                                    <ReactModal
+                                    isOpen={isModalOpen}
+                                    onRequestClose={handleCloseModal}
+                                    contentLabel="Example Modal"
+                                    className= ""
+                                    style={{
+                                        content: {
+                                        width: "500px",
+                                        height: "300px",
+                                        color: "black",
+                                        margin: "auto",
+                                        }
+                                    }}
+                                    >
+                                    <div>
+                                        <h2 className='mt-2'>Choisissez un sujet :</h2>
+                                        <table>
+                                            <tbody>
+                                                {Sujets.map((sujet) => (
+                                                <tr key={sujet.id}>
+                                                    <td>
+                                                    <label>
+                                                        <input
+                                                        type="radio"
+                                                        name="sujet"
+                                                        value={sujet.id}
+                                                        checked={selectedSujet && selectedSujet.id === sujet.id}
+                                                        onChange={() => handleSelectSujet(sujet)}
+                                                        />
+                                                        <span className='ml-2'>{sujet.sujet}</span>
+                                                    </label>
+                                                    </td>
+                                                </tr>
+                                                ))}
+                                            </tbody>
+                                            </table>
+
+
+                                        <button 
+                                        onClick={handleCloseModal}
+                                        style={{ 
+                                            position: "absolute", 
+                                            top: "1px", 
+                                            right: "10px", 
+                                            backgroundColor: "transparent",
+                                            border: "none",
+                                            cursor: "pointer",
+                                            fontSize: "20px",
+                                            color:"red",
+                                        }}
+                                        >
+                                        x
+                                        </button>
+
+                                        <button 
+                                        className='block w-40 mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded mb-5'
+                                        
+                                        onClick={DemanderEncadrement}
+                                        >
+                                        Demander
+                                        </button>
+                                    </div>
+                                    </ReactModal>
+                                        
+                                    </td>                                      
+                                </tr>                                                                
+                            ))}
+                        </tbody>
+
+                    </table>
+
+                    </div>
+
+                </div>
+                    
+        </div>
+
+    </div>
+    </div>
+                        
+
+    <a className="scroll-to-top rounded" href="#page-top">
+        <i className="fas fa-angle-up"></i>
+    </a>
+
+   
+    <div className="modal fade" id="logoutModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div className="modal-dialog" role="document">
+            <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button className="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div className="modal-footer">
+                    <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a className="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+    </div>
+    
+  );
+}
+
+export default DemandeEncadrement;

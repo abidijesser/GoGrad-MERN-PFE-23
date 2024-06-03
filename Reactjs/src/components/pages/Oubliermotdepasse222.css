@@ -1,0 +1,118 @@
+.otp-Form {
+    width: 500px;
+    height: 450px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 30px;
+    gap: 20px;
+    position: relative;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.082);
+    border-radius: 15px;
+     margin-right: 20px;
+    /*margin-top: 100px; */
+  }
+  
+  .mainHeading {
+    font-size: 1.875em;
+    color: rgb(15, 15, 15);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .otpSubheading {
+    font-size: 1em;
+    color: black;
+    line-height: 17px;
+    text-align: center;
+    font-weight: 500;
+    color: #9CA3AF;
+  }
+  
+  .inputContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    
+  }
+  
+  .otp-input {
+    background-color: rgb(228, 228, 228);
+    width: 60px;
+    height: 50px;
+    text-align: center;
+    border: none;
+    border-radius: 7px;
+    caret-color: rgb(69, 13, 160);
+    color: rgb(44, 44, 44);
+    outline: none;
+    font-weight: 600;
+    margin-top: 25px;
+    
+  }
+  
+  .otp-input:focus,
+  .otp-input:valid {
+    background-color: rgb(154, 183, 245);
+    transition-duration: .3s;
+  }
+  
+  .verifyButton {
+    width: 83%;
+    height: 55px;
+    border: none;
+    background-color: rgb(9, 11, 146);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 10px;
+    transition-duration: .2s;
+    margin-top: 20px;
+  }
+  
+  .verifyButton:hover {
+    background-color: rgb(5, 7, 97);
+    transition-duration: .2s;
+  }
+  
+  
+  
+  .resendNote {
+    font-size: 1em;
+    color: black;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  
+  .resendBtn {
+    background-color: transparent;
+    border: none;
+    color: rgb(9, 11, 146) ;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 700;
+    margin-left: 6px;
+    margin-bottom: 11px;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .resendContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

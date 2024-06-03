@@ -1,0 +1,88 @@
+.customeColor {
+  /* background: linear-gradient(133.92deg, rgba(15, 79, 204, 0.55) 27.94%, rgba(255, 0, 0, 0.24) 82.45%); */
+  background: linear-gradient(
+    to right,
+    rgba(45, 0, 179, 0.55) 32.94%,
+    rgba(236, 25, 0, 0.24) 51.45%
+  );
+}
+
+.ProverbeLandingPageStyle {
+  color: #ffffff;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 43px;
+  line-height: 57px;
+}
+.sagesse{
+   display: flex;
+   flex-direction: column;
+}
+
+.notreConseil{
+
+   font-weight: 500;
+   font-size: 40px;
+   line-height: 60.61px;
+   color: #7C36EE;
+}
+.question{
+   font-weight: 500;
+   font-size: 30px;
+   line-height:26.42px;
+   color:#FFFFFF;
+}
+.guide{
+   font-weight: 300;
+   font-size: 18px;
+   line-height: 26.63px;
+   color: #FFFFFF;
+}
+.mySimpleCard{
+   width: 290px;
+   height: 460px;
+   background-color: #fff;
+   border-radius: 40px 40px 40px 40px !important;
+}
+.advantages{
+   font-weight: 700;
+   font-size: 20px;
+   line-height: 24px;
+   color: #000000;
+
+}
+.foooterTitle{
+   font-weight: 600;
+   font-size: 22px;
+   line-height: 30.26px;
+   color: #000000;
+  
+}
+.Liste{
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 24.2px;
+   color: #000000;
+   text-decoration:  none;
+}
+.copy{
+   font-weight: 400;
+   font-size:12px;
+   line-height: 21.78px;
+   color: #000000;
+
+}
+
+.notreConseil2{
+
+   font-weight: 500;
+   font-size: 40px;
+   line-height: 60.61px;
+   color: #7C36EE;
+}
+
+
+
+
+
